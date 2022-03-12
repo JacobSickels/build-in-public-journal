@@ -1,5 +1,7 @@
 # Turborepo starter
 
+https://build-in-public-journal.vercel.app/ 
+
 This is an official Yarn v1 starter turborepo.
 
 ## What's inside?
