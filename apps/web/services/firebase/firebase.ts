@@ -6,6 +6,7 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
@@ -29,13 +30,40 @@ const auth = getAuth();
 const database = getFirestore(app);
 
 const googleAuthProvider = new GoogleAuthProvider();
+const githubAuthProvider = new GithubAuthProvider();
 
-const loginWithGoogle = () => signInWithPopup(auth, googleAuthProvider);
+const alertFirebaseError = (error: { code: string }, notifications: any) => {
+  if (error.code === "auth/account-exists-with-different-credential") {
+    notifications.showNotification({
+      color: "red",
+      message:
+        "There is already an account registered with this email address!",
+    });
+  }
+};
+
+const loginWithGoogle = (notifications: any) => {
+  try {
+    signInWithPopup(auth, googleAuthProvider);
+  } catch (e) {
+    alertFirebaseError(e, notifications);
+  }
+};
+
+// Any here should be NotificationsContextProps but mantine doesn't export the type?
+const loginWithGithub = async (notifications: any) => {
+  try {
+    await signInWithPopup(auth, githubAuthProvider);
+  } catch (e) {
+    alertFirebaseError(e, notifications);
+  }
+};
 
 const logout = () => signOut(auth);
 
 export {
   loginWithGoogle,
+  loginWithGithub,
   logout,
   getAuth,
   onAuthStateChanged,

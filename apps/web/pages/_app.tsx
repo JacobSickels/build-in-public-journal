@@ -1,4 +1,4 @@
-import { MantineProvider } from "ui";
+import { MantineProvider, NotificationsProvider } from "ui";
 import { FirebaseAuthProvider } from "../services/firebase/AuthenticationProvider";
 import "../styles/reset.css";
 
@@ -6,7 +6,9 @@ const App = ({ Component, pageProps }) => {
   return (
     <FirebaseAuthProvider>
       <MantineProvider>
-        <Component {...pageProps} />
+        <NotificationsProvider>
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </FirebaseAuthProvider>
   );
